@@ -1,714 +1,286 @@
-# Diseño de una matriz institucional de riesgos de inteligencia artificial y checklist de privacidad para proyectos académicos de IA local, RAG, agentes y sistemas multimodales
+# 1. Planteamiento del problema
 
-## Resumen
+La gestión de una cafetería implica un flujo continuo de información: productos ofrecidos, pedidos atendidos, ventas, consumo de insumos, compras a proveedores, gastos e ingresos. De manera preliminar, se presume que el establecimiento objeto de estudio registra buena parte de esta información de forma manual en cuadernos físicos. Esta práctica es habitual en negocios pequeños por su bajo costo y familiaridad, pero puede limitar la capacidad de consulta, consolidación y análisis a medida que crece el volumen de operaciones. **El tipo de información registrada, su estructura y su frecuencia deben validarse mediante entrevista [Pendiente de validación con la administradora].**
 
-La incorporación de inteligencia artificial generativa en procesos académicos y de ingeniería de sistemas introduce oportunidades para automatizar tareas, consultar conocimiento, generar contenidos y construir soluciones multimodales; simultáneamente, plantea riesgos relacionados con privacidad, seguridad, propiedad intelectual, trazabilidad, uso de herramientas, transferencia de información y confiabilidad de los resultados. El diplomado **Inteligencia Artificial Generativa Local, Agentes Autónomos y Sistemas Multimodales – IA 5.0 Lab** plantea una formación orientada no solo al uso de modelos, sino a su diseño, despliegue, evaluación y gobernanza, con especial énfasis en arquitecturas locales y reproducibles. 
+Entre los problemas potenciales del registro exclusivamente manual podría encontrarse la dificultad para consultar información histórica y para buscar datos específicos, pues la localización de un registro depende de la revisión página por página. Asimismo, podría presentarse demora en consolidar ventas, compras, gastos o inventario, lo que dificultaría generar reportes oportunos y apoyar decisiones sobre qué productos mantener, qué insumos reponer o cuándo comprar. Estas son hipótesis iniciales, no hallazgos confirmados.
 
-En este contexto, y particularmente en relación con el apartado **8.4 Gobierno académico**, se propone el diseño de un instrumento académico compuesto por una matriz de riesgos de inteligencia artificial y un checklist de privacidad. El instrumento permitirá estructurar la identificación de actores, activos, datos, amenazas, controles, responsables y evidencias, relacionando los riesgos con las funciones **Govern, Map, Measure y Manage** del NIST AI Risk Management Framework. El proyecto tendrá un alcance de formulación y especificación, acompañado de una aplicación demostrativa a un caso académico controlado, sin pretender constituirse en una plataforma institucional productiva ni en una certificación de cumplimiento jurídico.
+También podrían existir riesgos asociados a la calidad y la integridad de los registros: errores de transcripción, omisiones, duplicación de anotaciones o cálculos manuales inconsistentes. A ello se suma la posible falta de trazabilidad sobre los cambios realizados, pues en un cuaderno físico resulta difícil determinar quién modificó un dato, cuándo y por qué. **Se presume que estas situaciones pueden darse, pero su existencia, frecuencia e impacto deben verificarse con la administradora [Pendiente de validación con la administradora].**
 
-La propuesta se desarrollará mediante una metodología académica de carácter aplicado, que comprende diagnóstico del contexto, identificación de activos y datos, diseño del instrumento, aplicación controlada, revisión y documentación de limitaciones. Como resultado esperado se obtendrá un formato reproducible, una guía de diligenciamiento y evidencias que permitan valorar su utilidad para proyectos académicos de IA local-first, RAG, agentes y sistemas multimodales.
+Desde la perspectiva de la continuidad operativa, el conocimiento contenido en los cuadernos podría depender de una sola persona, lo que generaría vulnerabilidad ante ausencias, rotación o cambios de responsabilidades. Adicionalmente, los registros físicos están expuestos a pérdida, deterioro, humedad o daño accidental, y podrían carecer de copia de respaldo. Finalmente, el acceso a los cuadernos podría no estar controlado, lo que plantea un riesgo de consulta o alteración no autorizada de información comercial. Todas estas condiciones son **hipótesis iniciales que deben validarse mediante entrevista con la administradora de la cafetería.**
 
-**Palabras clave:** Inteligencia artificial; gestión de riesgos; NIST AI RMF; privacidad; gobernanza de IA; IA local; proyectos académicos.
+Frente a este escenario, se propone explorar una solución **local y de fácil uso** que permita digitalizar y organizar gradualmente la información que la cafetería priorice, manteniendo el control de los datos dentro de su propia infraestructura. La propuesta no depende de servicios en la nube ni de APIs externas de inteligencia artificial, y debería poder operar sin conexión permanente a Internet. Dado que los usuarios podrían tener conocimientos tecnológicos limitados, la interfaz deberá ser sencilla, con lenguaje claro y procesos guiados.
 
----
+Como componente complementario, se contempla evaluar el uso de un modelo de lenguaje local pequeño o mediano para apoyar consultas en lenguaje natural, resúmenes y borradores de reportes sobre información previamente registrada y autorizada. La inteligencia artificial no sustituirá a la administradora, al control de caja ni a la contabilidad profesional, y no modificará información sensible sin validación humana explícita. De forma paralela, se evaluará la viabilidad de adoptar o integrar un ERP gratuito o de código abierto, como Odoo Community Edition u otra alternativa, lo cual constituye una opción por validar. La decisión entre construir una solución propia, adaptar un ERP o integrar ambos enfoques dependerá del levantamiento de información, los requisitos, los costos, el hardware disponible, la facilidad de uso y la capacidad de mantenimiento.
 
-# 1. Introducción
+**Pregunta orientadora del proyecto:**
 
-La inteligencia artificial generativa se ha consolidado como una tecnología transversal para la ingeniería de software, el análisis de información, la automatización, la investigación aplicada y la producción de contenidos digitales. Esta transformación exige superar una aproximación centrada exclusivamente en el consumo de modelos como servicios remotos y avanzar hacia una comprensión integral de su arquitectura, datos, modelos, herramientas, restricciones computacionales, evaluación y riesgos. El documento base del diplomado plantea precisamente esta perspectiva: la inteligencia artificial debe comprenderse como una infraestructura programable, evaluable y gobernable. 
-
-El enfoque **local-first** adquiere especial importancia dentro de esta perspectiva. El documento del diplomado señala que la ejecución local puede permitir mayor control sobre datos, versiones, dependencias y recursos computacionales, además de facilitar escenarios con conectividad limitada. Al mismo tiempo, aclara que el enfoque local no implica rechazar la nube, sino desarrollar criterios de ingeniería para decidir qué información debe procesarse localmente, qué puede utilizar infraestructura compartida y qué información no debería abandonar un entorno controlado. 
-
-Esta orientación se extiende a los sistemas RAG, agentes y aplicaciones multimodales. Un agente puede consultar conocimiento, interactuar con archivos, invocar funciones y ejecutar herramientas; por ello, el diplomado plantea controles relacionados con permisos, aislamiento, validación de entradas, supervisión humana, auditoría y mínimo privilegio. 
-
-De manera transversal, la propuesta curricular incorpora privacidad, propiedad intelectual, trazabilidad, transparencia, supervisión humana, sostenibilidad y gestión de riesgos. En particular, el Módulo 1 establece como actividades la caracterización de casos de uso, identificación de actores y datos, clasificación de sensibilidad, elaboración de mapas de flujo de datos, análisis de procesamiento local, híbrido o remoto y construcción de una primera matriz de riesgos. 
-
-En este marco se encuentra el apartado **8.4 Gobierno académico**, que contempla expresamente un **“Formato de matriz de riesgos de IA y checklist de privacidad”**, junto con otros instrumentos como fichas de modelo y datos, inventarios de licencias y rúbricas.  El presente proyecto toma dicho elemento como objeto específico de desarrollo académico.
-
-La propuesta busca, por tanto, transformar esa necesidad curricular en una especificación estructurada que permita documentar riesgos y condiciones de privacidad durante el ciclo de vida de proyectos académicos de inteligencia artificial, manteniendo una perspectiva de ingeniería y evitando que la gobernanza se limite a declaraciones generales.
+¿Cómo diseñar una solución local de automatización para una cafetería que permita digitalizar, organizar, consultar y apoyar el seguimiento de sus procesos operativos y administrativos, reduciendo la dependencia de registros manuales en cuadernos, manteniendo el control local de la información y garantizando la supervisión humana de las operaciones relevantes?
 
 ---
 
-# 2. Contextualización
+# 2. Matriz preliminar de riesgos NIST AI RMF
 
-## 2.1 Contexto del diplomado
+La siguiente matriz es una **versión preliminar, elaborada antes de la entrevista con la administradora**. Los riesgos se formulan como eventos potenciales o condiciones por validar, no como hechos ocurridos. La matriz deberá ajustarse cuando se conozcan los procesos reales, los datos tratados, los usuarios y la infraestructura de la cafetería.
 
-El diplomado **Inteligencia Artificial Generativa Local, Agentes Autónomos y Sistemas Multimodales – IA 5.0 Lab** tiene como propósito formar profesionales capaces de diseñar, desplegar y gobernar soluciones de inteligencia artificial que puedan operar localmente, integrar sistemas RAG y agentes, generar y validar código y producir contenidos multimodales. Su orientación busca que las herramientas tecnológicas funcionen como medios de aprendizaje y no como fines dependientes de una plataforma específica.  
+El NIST AI Risk Management Framework (AI RMF 1.0) organiza la gestión de riesgos de sistemas de IA en cuatro funciones: **Govern** (cultura, políticas, roles y responsabilidades), **Map** (contexto, usuarios y riesgos potenciales), **Measure** (análisis, evaluación y seguimiento de riesgos) y **Manage** (priorización y tratamiento). Aquí se emplean como eje de organización de los riesgos del sistema completo, incluyendo los componentes no basados en IA.
 
-La estructura curricular contempla ocho módulos, de los cuales el primero corresponde a **“Fundamentos, soberanía tecnológica y gobernanza de IA”**, con contenidos relacionados con arquitectura de IA, gobernanza de datos, riesgos, privacidad, propiedad intelectual, trazabilidad, transparencia, supervisión humana y ciclo de vida de los sistemas. 
+## Escala preliminar
 
-El Módulo 1 establece una competencia práctica particularmente relacionada con este proyecto: caracterizar casos de uso, identificar actores y datos, clasificar la sensibilidad de la información, elaborar mapas de flujo de datos, determinar qué puede procesarse localmente y construir una primera matriz de riesgos. 
+| Dimensión | Valores |
+|---|---|
+| Probabilidad | Baja, Media, Alta |
+| Impacto | Bajo, Medio, Alto |
+| Nivel de riesgo | Bajo, Medio, Alto, Crítico |
+| Estado | Por validar, Pendiente de mitigación, Mitigado parcialmente, Aceptado con control |
 
-## 2.2 IA local-first
+*Criterio orientativo del nivel:* Alta probabilidad con impacto Alto se considera Crítico; combinaciones Alta–Medio o Media–Alto, Alto; combinaciones Media–Medio, Baja–Alto o Alta–Bajo, Medio; las demás, Bajo. Esta asignación es una estimación académica inicial, no una medición.
 
-El enfoque local-first constituye uno de los elementos diferenciadores del diplomado. El documento establece que los laboratorios nucleares estarán diseñados para ejecutarse sin conexión una vez preparado el entorno y que la información de casos que requiera confidencialidad o control no deberá abandonar la infraestructura de práctica. 
+## Matriz
 
-Este principio tiene implicaciones directas para la gestión de riesgos. Una decisión aparentemente técnica —por ejemplo, utilizar un modelo local, un servicio externo o una arquitectura híbrida— puede modificar la exposición de los datos, las dependencias, la trazabilidad y las responsabilidades asociadas al sistema.
+| ID | Función NIST AI RMF | Categoría | Riesgo | Causa o condición | Consecuencia potencial | Probabilidad | Impacto | Nivel | Control o mitigación inicial | Responsable propuesto | Estado |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| R-01 | Govern | Gobernanza y responsabilidades | Ausencia de responsables definidos para registrar información y aprobar cambios | Podría no existir una asignación formal de roles sobre ventas, caja, inventario y compras [Pendiente de validación con la administradora] | Cambios sin autorización, registros contradictorios, imposibilidad de atribuir responsabilidades | Media | Alto | Alto | Definir matriz de roles y aprobaciones; registrar usuario, fecha y motivo de cada cambio | Administradora (con equipo académico) | Por validar |
+| R-02 | Govern | Datos y privacidad | Registro de datos personales de clientes o empleados sin finalidad o autorización clara | Podrían existir registros de clientes o turnos sin criterios de tratamiento [Pendiente de validación con la administradora] | Incumplimiento de normativa de protección de datos; pérdida de confianza | Media | Alto | Alto | Clasificar la información; registrar solo datos necesarios; documentar finalidad; usar datos sintéticos o anonimizados en la fase académica | Administradora / Propietario(a) | Por validar |
+| R-03 | Govern | Datos y privacidad | Exposición de información por uso no autorizado de servicios externos (nube, APIs de IA, mensajería) | Usuarios podrían compartir datos con herramientas externas por comodidad | Fuga de información comercial o personal; incumplimiento del enfoque local-first | Media | Alto | Alto | Política de no envío a servicios externos; bloquear conexiones de salida de la aplicación; capacitación | Equipo académico / Administradora | Pendiente de mitigación |
+| R-04 | Manage | Seguridad de la información | Acceso no autorizado a ventas, gastos, inventario o datos de empleados; contraseñas débiles o cuentas compartidas | Podría usarse un equipo compartido o una sola cuenta [Pendiente de validación con la administradora] | Consulta o alteración indebida; imposibilidad de auditar acciones | Alta | Alto | Crítico | Cuentas individuales, roles con mínimo privilegio, política de contraseñas, bloqueo de sesión, registro de auditoría | Equipo académico (diseño) / Administradora (gestión de cuentas) | Pendiente de mitigación |
+| R-05 | Measure | Calidad e integridad de datos | Errores de digitación y registros incompletos, inconsistentes o desactualizados | Digitación manual, falta de validaciones, captura tardía de datos | Reportes y consultas incorrectas; decisiones basadas en datos erróneos | Alta | Medio | Alto | Validaciones de formato y rango, campos obligatorios, mecanismo de corrección con trazabilidad, revisión periódica | Personal operativo / Administradora | Pendiente de mitigación |
+| R-06 | Manage | Operación y continuidad | Pérdida o alteración de información al pasar del cuaderno al sistema | Transcripción parcial, interpretación de caligrafía, omisión de páginas | Series históricas incompletas; discrepancias entre cuaderno y sistema | Media | Medio | Medio | Migración acotada a un conjunto de prueba autorizado; conciliación por muestreo; conservar los cuadernos originales | Equipo académico con apoyo de la administradora | Por validar |
+| R-07 | Manage | Operación y continuidad | Falta de respaldo de la información digitalizada | Podría no existir cultura ni procedimiento de copias de seguridad [Pendiente de validación con la administradora] | Pérdida irrecuperable de datos por falla de disco, borrado o incidente | Media | Alto | Alto | Respaldos locales periódicos, protegidos y con prueba de restauración; asignar responsable de revisión | Responsable técnico designado / Administradora | Pendiente de mitigación |
+| R-08 | Measure | Modelo de IA local | Respuestas o resúmenes erróneos, incompletos o inventados por el modelo local | Limitaciones de modelos pequeños cuantizados, calidad del español, ausencia de contexto suficiente | Interpretaciones equivocadas sobre ventas, inventario o compras | Alta | Medio | Alto | Restringir el asistente a datos autorizados; mostrar las fuentes consultadas; pruebas con casos de verificación; pruebas del modelo antes de seleccionarlo | Equipo académico | Pendiente de mitigación |
+| R-09 | Measure | Modelo de IA local | Confianza excesiva de los usuarios en reportes generados por IA | Percepción de que la salida automatizada es siempre correcta | Decisiones de compra, precio o caja sin verificación | Media | Alto | Alto | Advertencias visibles; los reportes de IA se etiquetan como borradores sujetos a verificación humana | Administradora / Equipo académico | Pendiente de mitigación |
+| R-10 | Manage | Riesgos de automatización | Modificación automática de datos (ventas, caja, inventario, precios, usuarios) sin aprobación humana | Concesión de permisos de escritura a la IA o a herramientas automatizadas | Alteraciones no detectadas, errores en cadena, pérdida de trazabilidad | Baja | Alto | Medio | Permisos de solo lectura para la IA; confirmación humana explícita para cualquier creación, edición o eliminación | Equipo académico (diseño) / Administradora (aprobación) | Pendiente de mitigación |
+| R-11 | Map | Integración con ERP o sistema administrativo | Integración inadecuada con un ERP gratuito o con Odoo Community Edition | Incompatibilidades, módulos no disponibles en la edición evaluada, complejidad de configuración [Por validar] | Retrabajo, datos duplicados, sistema difícil de mantener | Media | Medio | Medio | Evaluación comparativa previa y prueba de concepto acotada; documentar decisión; no asumir selección | Equipo académico / Docente asesor | Por validar |
+| R-12 | Govern | Integración con ERP o sistema administrativo | Crecimiento del alcance hacia una implementación completa de ERP no viable en el tiempo académico | Ampliación progresiva de requisitos (contabilidad, nómina, facturación) | Proyecto inconcluso o de baja calidad; incumplimiento del cronograma | Alta | Medio | Alto | Definir alcance incremental, lista de exclusiones y control formal de cambios | Equipo académico / Docente asesor | Pendiente de mitigación |
+| R-13 | Manage | Infraestructura y hardware | Equipo insuficiente, fallas de almacenamiento, cortes de energía o falta de mantenimiento | Hardware de capacidad limitada o sin protección eléctrica [Pendiente de validación con la administradora] | Lentitud, corrupción de datos, interrupciones | Media | Alto | Alto | Dimensionamiento tras pruebas; SSD; UPS recomendada; plan básico de mantenimiento | Equipo académico / Administradora | Por validar |
+| R-14 | Map | Dependencias, licencias y software | Licencias, módulos o dependencias incompatibles con uso comercial o académico | Modelos de IA, bibliotecas o ERP con condiciones de uso distintas o cambiantes | Restricciones legales o necesidad de rediseñar componentes | Media | Medio | Medio | Inventariar licencias y procedencia; verificar condiciones de uso comercial antes de adoptar | Equipo académico | Por validar |
+| R-15 | Govern | Usuarios y experiencia de uso | Falta de capacitación y dependencia de una única persona para operar el sistema | Usuarios con conocimientos tecnológicos limitados; conocimiento concentrado | Uso incorrecto, abandono del sistema, interrupción si la persona no está disponible | Alta | Medio | Alto | Interfaz guiada, manual básico, sesiones de capacitación, al menos un suplente capacitado | Administradora / Equipo académico | Pendiente de mitigación |
+| R-16 | Manage | Riesgos económicos y de control de caja | Discrepancias de caja o decisiones financieras apoyadas solo en reportes del sistema | Digitalización incompleta, errores de registro o interpretación de reportes como sustituto del arqueo | Diferencias monetarias no detectadas; decisiones de compra mal fundamentadas | Media | Alto | Alto | Mantener arqueo y validación humana; el sistema se presenta como apoyo, no como contabilidad certificada | Personal de caja / Administradora | Por validar |
 
-## 2.3 RAG, agentes y herramientas
+## Interpretación preliminar
 
-El diplomado incorpora sistemas RAG para trabajar con documentos y bases de conocimiento, así como agentes capaces de utilizar herramientas controladas. El material establece que los documentos utilizados para RAG deben tratarse como activos de información, mientras que los agentes deben contar con permisos explícitos, controles y, cuando corresponda, sandboxing y aprobación humana para acciones sensibles. 
+Los riesgos que parecen prioritarios para investigar en la entrevista son los relacionados con **control de acceso y responsabilidades (R-01, R-04)**. Conviene averiguar quién registra y quién autoriza cambios, cuántas personas acceden a los cuadernos o al equipo, y si existen cuentas o dispositivos compartidos. De estas respuestas depende el diseño de roles y de la auditoría.
 
-En consecuencia, una matriz de riesgos académica debe considerar no solamente el modelo de IA, sino también los documentos, embeddings, herramientas, permisos, integraciones, fuentes externas y personas involucradas.
+Un segundo grupo se refiere a **continuidad y calidad de los datos (R-05, R-06, R-07, R-13)**. Debe indagarse cómo se registran hoy las operaciones, cuáles cuadernos son críticos, si existe algún respaldo y cuál es el equipo y las condiciones de energía disponibles. Esto permitirá definir el conjunto mínimo de datos a digitalizar y el esquema de copias de seguridad.
 
-## 2.4 Sistemas multimodales y contenido sintético
+Un tercer grupo corresponde a los **riesgos específicos de la IA local (R-08, R-09, R-10)** y a la **protección de datos personales (R-02, R-03)**. Es necesario conocer si se registran datos de clientes o empleados, qué tipo de consultas haría realmente útil un asistente y qué decisiones no deberían apoyarse en él. También conviene identificar la actitud de los usuarios hacia herramientas de IA, para calibrar advertencias y límites.
 
-El diplomado incluye generación y análisis de imagen, visión, audio, voz, video y 3D. Estas capacidades incorporan riesgos particulares relacionados con identidad, consentimiento, procedencia, derechos de autor y contenido sintético. El documento establece que las piezas sintéticas deben identificarse cuando puedan inducir a error y que no deben clonarse voces, rostros o estilos identificables sin consentimiento y análisis de derechos. 
-
-Por ello, el checklist propuesto debe extender la privacidad más allá de los datos textuales e incluir imágenes, voz, rostro y contenido generado.
-
-## 2.5 Protección de datos y responsabilidad humana
-
-El documento base establece que, cuando los laboratorios o proyectos tratan datos personales, deben considerarse finalidad, autorización cuando corresponda, seguridad, confidencialidad, circulación restringida y derechos de los titulares. Asimismo, se plantea priorizar datos públicos, sintéticos, anonimizados o autorizados en las actividades académicas. 
-
-La ejecución local puede reducir transferencias innecesarias, pero no elimina las obligaciones relacionadas con la protección de los datos. De igual manera, la generación de contenido mediante IA no elimina la responsabilidad humana sobre su verificación y uso. 
-
-## 2.6 Diferenciación entre información establecida y propuesta
-
-Los siguientes elementos se consideran **establecidos en el documento base**:
-
-* El enfoque de ingeniería aplicado al diplomado.
-* El énfasis local-first.
-* La incorporación de RAG, agentes y sistemas multimodales.
-* La gestión de privacidad, seguridad, licenciamiento y trazabilidad.
-* El uso del NIST AI RMF.
-* Las funciones Govern, Map, Measure y Manage.
-* La existencia de un formato de matriz de riesgos de IA y checklist de privacidad dentro del apartado 8.4.
-
-Por otra parte, los siguientes elementos corresponden a la **propuesta específica de este proyecto**:
-
-* La estructura detallada de campos de la matriz.
-* La escala preliminar de probabilidad e impacto.
-* La organización concreta del checklist.
-* Los criterios de diligenciamiento.
-* El esquema de evidencias.
-* El caso académico controlado que se utilice para probar el instrumento.
-
-La existencia de procedimientos institucionales adicionales, formatos actualmente vigentes o responsables institucionales específicos deberá confirmarse antes de plantear una adopción formal:
-
-**[Pendiente de validación institucional]**: verificar si actualmente existe una matriz institucional de riesgos de IA, un checklist de privacidad, procedimientos de aprobación de proyectos de IA, responsables formales o instrumentos equivalentes que deban integrarse o evitar duplicarse.
+Finalmente, la entrevista debe aclarar las **expectativas de alcance (R-11, R-12, R-14, R-15, R-16)**: qué procesos desea priorizar la administradora, si el ERP es realmente una necesidad o una expectativa, qué nivel de capacitación es viable y cómo se maneja hoy el control de caja. Esto evitará un alcance desproporcionado respecto al tiempo académico.
 
 ---
 
-# 3. Planteamiento del problema
+# 3. Usuarios y partes interesadas
 
-## 3.1 Situación actual
+La siguiente identificación es preliminar. No se presumen nombres ni cargos no confirmados.
 
-Los proyectos académicos de inteligencia artificial pueden involucrar múltiples componentes técnicos y diferentes categorías de información. Un proyecto puede utilizar documentos para RAG, conjuntos de datos, modelos locales o externos, APIs, herramientas, repositorios de código, agentes, contenido multimodal y mecanismos de almacenamiento.
+| Grupo o usuario | Rol preliminar | Necesidad o interés | Interacción esperada con la solución | Información o permisos que podría requerir | Aspectos pendientes de validar |
+|---|---|---|---|---|---|
+| Administradora de la cafetería | Responsable principal de la operación y fuente prioritaria de información | Consultar información consolidada, apoyar el control y obtener reportes | Consulta, revisión, aprobación de cambios y uso del asistente local | Acceso amplio de consulta; aprobación de cambios; gestión de usuarios [Pendiente de validación con la administradora] | Procesos que gestiona, volumen de información, nivel de familiaridad tecnológica |
+| Personal de atención o ventas | Posible registro de pedidos y ventas | Registrar rápido y sin errores | Captura sencilla de ventas o pedidos | Registro de ventas; consulta limitada de productos [Pendiente de validación con la administradora] | Si existe este rol, cómo registra hoy y con qué frecuencia |
+| Personal responsable de caja, si existe | Posible control de ingresos y cierres | Cuadrar caja y disponer de soportes | Registro de movimientos y consulta de cierres | Registro y consulta de caja; sin permisos de eliminación | Si existe el rol, y quién autoriza correcciones |
+| Personal responsable de inventario o compras, si existe | Posible control de insumos y pedidos a proveedores | Conocer existencias y planificar compras | Registro de entradas y salidas; consulta de existencias | Gestión de inventario y compras [Pendiente de validación con la administradora] | Quién decide compras, qué insumos se controlan |
+| Propietario(a) o responsable del negocio, si existe | Posible decisor estratégico | Visión general del negocio y control de la información | Consulta de reportes | Reportes de alto nivel [Pendiente de validación con la administradora] | Si es persona distinta de la administradora y qué información requiere |
+| Proveedores (solo si se registran compras o pedidos) | Contrapartes externas | Pedidos y pagos claros | Sin acceso directo; se registran como entidades | Datos básicos de contacto y productos | Si es necesario registrarlos y con qué datos personales |
+| Equipo académico desarrollador | Diseño, desarrollo, pruebas y documentación | Entregar una solución viable y documentada | Desarrollo, configuración y mantenimiento durante el proyecto | Acceso técnico limitado a datos de ejemplo, anonimizados o autorizados | Distribución de roles, tiempos, acuerdos de confidencialidad |
+| Docente o asesor del proyecto | Orientación académica y evaluación | Rigor técnico y alineación con el diplomado | Revisión de entregables y retroalimentación | Acceso a documentación y demostraciones | Criterios de evaluación y calendario |
+| Personal externo de soporte técnico, si llega a requerirse | Apoyo en mantenimiento posterior | Contar con documentación para dar soporte | Intervención excepcional | Acceso temporal y controlado, bajo supervisión | Si será necesario y quién asumirá el costo y la autorización |
 
-El propio diplomado contempla proyectos que deben integrar arquitectura, datos, integración, evaluación, seguridad, privacidad, licencias y documentación. Además, exige que los proyectos incorporen una matriz de riesgos y medidas de seguridad. 
-
-Desde esta perspectiva, el riesgo no se encuentra exclusivamente en el modelo. También puede surgir de los datos utilizados, la procedencia de un modelo o dataset, una licencia incompatible, una transferencia de información hacia un servicio externo, un agente con permisos excesivos, una herramienta vulnerable o una salida que no haya sido verificada.
-
-## 3.2 Situación problemática
-
-En el contexto académico analizado se observa la necesidad de contar con un mecanismo estructurado que facilite la identificación y documentación homogénea de estos elementos. El documento base establece la necesidad de formatos de gobierno académico, incluyendo específicamente una matriz de riesgos de IA y un checklist de privacidad. 
-
-Sin embargo, **[Pendiente de validación institucional]** si ya existe actualmente un instrumento formal con el nivel de detalle requerido para proyectos que incorporen IA local, RAG, agentes, herramientas y sistemas multimodales.
-
-En ausencia de un mecanismo estandarizado o cuando los instrumentos existentes resulten insuficientes, podrían presentarse diferencias entre equipos en aspectos como:
-
-* Identificación y clasificación de datos.
-* Registro de actores y responsables.
-* Evaluación de modelos y dependencias.
-* Documentación de licencias y procedencia.
-* Identificación de transferencias hacia servicios externos.
-* Análisis de riesgos de agentes y herramientas.
-* Registro de controles y medidas de mitigación.
-* Evidencia de pruebas de seguridad.
-* Seguimiento del riesgo residual.
-* Documentación de decisiones de arquitectura.
-
-La situación no implica afirmar que estos controles no existan; plantea la necesidad de determinar si pueden ser sistematizados mediante un instrumento académico común.
-
-## 3.3 Consecuencias potenciales
-
-La ausencia o dispersión de criterios homogéneos podría dificultar:
-
-* La protección adecuada de información personal, institucional o empresarial.
-* La identificación de transferencias no autorizadas hacia servicios externos.
-* La determinación clara de responsabilidades.
-* El control de licencias y procedencia de modelos y datasets.
-* La evaluación de resultados generados por IA.
-* La identificación de riesgos de prompt injection y fuga de información.
-* La delimitación de permisos otorgados a agentes.
-* La comparación entre proyectos.
-* La reproducibilidad de las decisiones técnicas.
-* La sustentación de controles ante docentes, asesores o instancias académicas.
-
-Estos riesgos son coherentes con las preocupaciones de seguridad y gobernanza contempladas en el diplomado, particularmente prompt injection, fuga de datos, tool misuse, dependencias, permisos excesivos y supply chain de modelos. 
-
-## 3.4 Necesidad de intervención
-
-Ante esta situación resulta pertinente formular un instrumento que permita:
-
-1. Identificar los activos, datos, actores y procesos involucrados.
-2. Clasificar los riesgos de manera estructurada.
-3. Relacionar cada riesgo con las funciones Govern, Map, Measure y Manage.
-4. Registrar controles, responsables y evidencias.
-5. Incorporar verificaciones específicas de privacidad.
-6. Documentar decisiones relacionadas con procesamiento local, híbrido o remoto.
-7. Facilitar la trazabilidad de modelos, datasets, herramientas y dependencias.
-8. Establecer una base común para la revisión académica de proyectos.
-
-El instrumento deberá entenderse como un mecanismo de apoyo a la ingeniería responsable y no como sustituto de la revisión humana, jurídica o institucional.
-
-## 3.5 Pregunta orientadora
-
-**¿Cómo diseñar una matriz de riesgos de inteligencia artificial y un checklist de privacidad, alineados con el NIST AI RMF, que permitan identificar, evaluar, mitigar y documentar los riesgos de proyectos académicos de IA local, RAG, agentes y sistemas multimodales dentro del diplomado IA 5.0 Lab?**
+La administradora será una **fuente prioritaria de levantamiento de información**. La entrevista permitirá validar roles, permisos, procesos, vocabulario propio del negocio y necesidades reales, y con ello ajustar esta tabla y los requisitos posteriores.
 
 ---
 
-# 4. Justificación
+# 4. Alcance
 
-## 4.1 Justificación académica
+El alcance se define como una propuesta académica, incremental y viable. Su definición final dependerá del levantamiento de información.
 
-El proyecto se encuentra directamente relacionado con el Módulo 1, cuyo propósito es introducir una perspectiva de ingeniería sobre gobernanza, datos, riesgos y arquitectura de IA. Entre sus actividades se encuentra precisamente la construcción de una primera matriz de riesgos y la toma de decisiones sobre procesamiento local, híbrido o remoto. 
+## 4.1 Incluye
 
-La creación de un instrumento estructurado permitiría convertir conocimientos conceptuales en una evidencia práctica y reutilizable. Asimismo, el documento base establece que las competencias deben evidenciarse mediante configuraciones reproducibles, repositorios, pruebas, prototipos, bitácoras y sustentaciones técnicas. 
+- Levantamiento inicial de información mediante entrevista con la administradora.
+- Identificación de procesos prioritarios y de los registros manuales más relevantes.
+- Diseño de una solución local para digitalizar información seleccionada.
+- Gestión básica de usuarios y roles.
+- Registro y consulta de información priorizada, sujeto a validación.
+- Inventario básico, ventas, compras, gastos o caja, únicamente si la entrevista lo confirma [Pendiente de validación con la administradora].
+- Generación de reportes básicos.
+- Copias de seguridad locales.
+- Asistente de IA local para consultas y resúmenes, sin modificar registros automáticamente.
+- Documentación técnica y manual básico de uso.
+- Matriz de riesgos, controles iniciales y recomendaciones.
+- Evaluación preliminar de viabilidad de un ERP gratuito, como Odoo Community Edition u otra alternativa de código abierto.
+- Pruebas con datos de ejemplo, sintéticos, anonimizados o expresamente autorizados.
 
-El resultado podría servir como referencia para otros proyectos académicos, siempre sujeto a la validación y adaptación institucional correspondiente.
+## 4.2 Fuera de alcance
 
-## 4.2 Justificación técnica
+- Implementación de nube, arquitectura híbrida o APIs de IA externas.
+- Automatización sin supervisión humana de decisiones de caja, compras, precios, pagos o contabilidad.
+- Integración con bancos, pasarelas de pago, DIAN, facturación electrónica o plataformas externas.
+- Sistema contable certificado.
+- Nómina completa.
+- Implementación total de un ERP empresarial.
+- Migración masiva de todos los cuadernos históricos.
+- Uso de información personal sensible sin autorización.
+- Reconocimiento facial, clonación de voz, vigilancia de empleados o clientes.
+- Entrenamiento de modelos fundacionales.
+- Implementación de modelos de video, imagen o 3D.
+- Desarrollo de aplicación móvil nativa, salvo que la entrevista determine una necesidad crítica y sea viable.
+- Garantía de disponibilidad empresarial 24/7.
+- Sustitución de asesoría contable, jurídica o tributaria.
+- Sustitución de la toma de decisiones de la administradora.
 
-Desde el punto de vista técnico, la propuesta permite integrar diferentes dimensiones de una solución de IA:
+## 4.3 Supuestos y dependencias
 
-* Datos.
-* Modelos.
-* Herramientas.
-* Arquitectura.
-* Integraciones.
-* Dependencias.
-* Seguridad.
-* Privacidad.
-* Evaluación.
-* Trazabilidad.
-
-El instrumento permitirá documentar decisiones técnicas que normalmente podrían quedar dispersas en código, notebooks, repositorios o documentos de proyecto.
-
-También permitirá incorporar el principio de reproducibilidad planteado en el diplomado, que considera versiones, modelos, parámetros, prompts críticos y dependencias. 
-
-## 4.3 Justificación ética y de privacidad
-
-La gobernanza de IA requiere considerar las posibles afectaciones a personas cuyos datos, imágenes, voces o información puedan ser procesados. El documento base incorpora privacidad, transparencia, responsabilidad, supervisión humana y no discriminación como elementos transversales. 
-
-El checklist propuesto permitirá llevar estos principios a preguntas concretas y verificables, evitando que la privacidad se trate únicamente como una declaración general.
-
-## 4.4 Justificación territorial e institucional
-
-El diplomado reconoce la pertinencia de la IA local para el Cauca debido a la heterogeneidad de capacidades tecnológicas y conectividad existente en el territorio. Se mencionan específicamente Popayán y Santander de Quilichao como contextos con ecosistemas educativos, empresariales, industriales, comerciales y de servicios. 
-
-En este contexto, un instrumento que permita decidir qué información debe permanecer localmente y qué información podría procesarse mediante servicios externos resulta pertinente para proyectos desarrollados en organizaciones con diferentes capacidades de infraestructura.
-
-La propuesta no presupone que todas las organizaciones del territorio tengan las mismas necesidades o restricciones. **[Pendiente de validación institucional y territorial]**: establecer posteriormente, mediante los mecanismos académicos que correspondan, si las necesidades del instrumento coinciden con los procesos específicos de las instituciones o grupos que eventualmente lo utilicen.
-
----
-
-# 5. Objetivos
-
-## 5.1 Objetivo general
-
-**Diseñar una matriz institucional de riesgos de inteligencia artificial y un checklist de privacidad, alineados con el NIST AI RMF y adaptados al contexto académico del diplomado IA 5.0 Lab, con el fin de fortalecer la identificación, evaluación, mitigación y documentación de riesgos en proyectos de IA local, RAG, agentes y sistemas multimodales.**
-
-## 5.2 Objetivos específicos
-
-1. **Diagnosticar** el contexto de los proyectos académicos de IA mediante la identificación de actores, activos de información, datos, procesos, dependencias y riesgos asociados.
-
-2. **Diseñar** una matriz de riesgos de IA alineada con las funciones Govern, Map, Measure y Manage del NIST AI RMF, incorporando criterios de valoración, controles, responsables y evidencias.
-
-3. **Elaborar** un checklist académico de privacidad, seguridad, licenciamiento, trazabilidad y protección de datos aplicable a proyectos de IA local, RAG, agentes y sistemas multimodales.
-
-4. **Validar** la aplicabilidad del instrumento mediante un caso académico controlado, revisión técnica o ejercicio piloto, documentando observaciones, limitaciones y oportunidades de mejora.
+| Supuesto o dependencia | Estado inicial | Acción requerida para validarlo |
+|---|---|---|
+| Disponibilidad de un computador local | Por validar | Consultar qué equipo existe, sus características y quién lo usa |
+| Electricidad y condiciones básicas de seguridad física | Por validar | Verificar estabilidad eléctrica, ubicación del equipo y control de acceso al espacio |
+| Acceso autorizado a registros de ejemplo | Por validar | Acordar con la administradora qué registros pueden usarse, anonimizados o sintéticos |
+| Tiempo de la administradora para entrevista y validación | Por validar | Programar entrevista y sesiones breves de validación |
+| Disposición del personal para aprender a usar el sistema | Por validar | Explorar actitudes y disponibilidad en la entrevista |
+| Existencia de procesos repetitivos que puedan digitalizarse | Por validar | Documentar procesos actuales y priorizarlos |
+| Compatibilidad de Odoo Community Edition u otra alternativa con el entorno disponible | Por validar | Revisar requisitos técnicos oficiales y realizar prueba de concepto acotada |
+| Disponibilidad de respaldo local | Por validar | Verificar si existe unidad externa o NAS, o si debe adquirirse |
+| Información clara sobre quién autoriza cambios en ventas, caja, inventario y compras | Por validar | Levantar el flujo de autorización en la entrevista |
 
 ---
 
-# 6. Alcance
+# 5. Requisitos
 
-El proyecto comprende la formulación y especificación de un instrumento académico para la gestión inicial de riesgos y privacidad en proyectos de inteligencia artificial.
+Los requisitos son **preliminares**. Los que dependen de la entrevista se marcan como [Pendiente de validación].
 
-El alcance contempla:
+## 5.1 Requisitos funcionales
 
-* Identificación de actores y responsables.
-* Identificación de activos de información.
-* Clasificación básica de datos.
-* Identificación de riesgos técnicos, éticos, legales, de seguridad y privacidad.
-* Diseño de la matriz de riesgos.
-* Relación de riesgos con Govern, Map, Measure y Manage.
-* Definición de campos de riesgo.
-* Criterios de probabilidad e impacto.
-* Nivel de riesgo.
-* Medidas de tratamiento.
-* Responsable del control.
-* Evidencia requerida.
-* Estado del riesgo.
-* Checklist de privacidad.
-* Reglas de uso para proyectos académicos de IA.
-* Aplicación demostrativa a un caso controlado.
-* Documentación de limitaciones y supuestos.
-* Recomendaciones para futuras validaciones institucionales.
+| Código | Requisito funcional | Prioridad | Estado de validación | Evidencia de aceptación |
+|---|---|---|---|---|
+| RF-01 | Permitir registrar y consultar información operativa priorizada de la cafetería | Alta | [Pendiente de validación] | Registro y consulta exitosa de datos de ejemplo del flujo priorizado |
+| RF-02 | Permitir crear cuentas de usuario con roles básicos | Alta | Propuesta preliminar | Creación de usuarios con distintos permisos y verificación de restricciones |
+| RF-03 | Permitir registrar cambios con fecha, usuario responsable y motivo cuando aplique | Alta | Propuesta preliminar | Bitácora de cambios consultable |
+| RF-04 | Permitir registrar productos e insumos | Media | [Pendiente de validación] | Alta, consulta y edición de productos o insumos de ejemplo |
+| RF-05 | Permitir registrar entradas y salidas de inventario | Media | [Pendiente de validación] | Movimientos registrados y existencias consistentes con datos de prueba |
+| RF-06 | Permitir registrar ventas básicas | Media | [Pendiente de validación] | Registro de ventas de ejemplo y consulta por fecha |
+| RF-07 | Permitir registrar compras, gastos o proveedores | Media | [Pendiente de validación] | Registro y consulta de compras o gastos de ejemplo |
+| RF-08 | Permitir consultar registros históricos mediante filtros básicos | Alta | Propuesta preliminar | Consultas por fecha, tipo o producto con resultados verificables |
+| RF-09 | Permitir generar reportes simples de la información registrada | Media | Propuesta preliminar | Reporte diario o semanal generado y contrastado con los datos de origen |
+| RF-10 | Permitir realizar copias de seguridad locales | Alta | Propuesta preliminar | Copia generada y verificada |
+| RF-11 | Permitir al asistente de IA local responder consultas basadas únicamente en información autorizada | Media | Propuesta preliminar | Respuestas contrastadas con los datos y rechazo de consultas fuera de permisos |
+| RF-12 | Exigir confirmación humana antes de que una herramienta automatizada cree, modifique o elimine registros | Alta | Propuesta preliminar | Prueba que demuestre que ninguna escritura se ejecuta sin confirmación explícita |
+| RF-13 | Permitir registrar incidencias, observaciones o correcciones | Media | Propuesta preliminar | Corrección registrada con trazabilidad del dato original |
+| RF-14 | Permitir exportar información básica a un formato local, como CSV o PDF | Baja | [Pendiente de validación] | Archivo exportado legible y coherente con los datos |
+| RF-15 | Permitir evaluar de manera comparativa la viabilidad de un ERP gratuito, como Odoo Community Edition, frente a una solución propia o simplificada | Media | Propuesta preliminar | Informe comparativo con criterios de costo, complejidad, hardware y mantenimiento |
 
-El instrumento se diseñará procurando independencia respecto de una herramienta tecnológica particular, en coherencia con el principio del diplomado de enseñar capacidades permanentes y no depender de una plataforma específica. 
+## 5.2 Requisitos no funcionales
 
-## 6.1 Estructura propuesta de la matriz de riesgos
+| Código | Requisito no funcional | Prioridad | Criterio verificable |
+|---|---|---|---|
+| RNF-01 | Operar localmente sin depender de la nube | Alta | Funcionamiento de las funciones básicas con la red externa desconectada |
+| RNF-02 | Ofrecer una interfaz sencilla y comprensible para usuarios no técnicos | Alta | Un usuario de prueba completa el flujo priorizado con instrucciones básicas |
+| RNF-03 | Mantener un bajo consumo de recursos | Media | Medición de CPU, RAM y disco durante operaciones habituales |
+| RNF-04 | Proteger el acceso mediante cuentas y contraseñas individuales | Alta | Inexistencia de cuentas compartidas y verificación de autenticación |
+| RNF-05 | Registrar auditoría de cambios relevantes | Alta | Bitácora con usuario, fecha y acción |
+| RNF-06 | Realizar respaldos locales periódicos | Alta | Procedimiento documentado y copia reciente verificable |
+| RNF-07 | Permitir recuperación básica ante fallos | Alta | Restauración de una copia en entorno de prueba |
+| RNF-08 | Ser mantenible | Media | Código estructurado y documentado |
+| RNF-09 | Contar con documentación | Media | Manual de usuario y README técnico entregados |
+| RNF-10 | Usar control de versiones del código | Media | Repositorio con historial de cambios |
+| RNF-11 | Ofrecer un tiempo de respuesta adecuado en operaciones básicas | Media | Tiempos medidos y registrados en el equipo de prueba (umbral por definir) |
+| RNF-12 | Ser compatible con equipos de recursos moderados | Alta | Pruebas en el hardware disponible |
+| RNF-13 | Permitir actualización controlada de software y modelos | Media | Procedimiento documentado, con registro de versiones |
+| RNF-14 | Garantizar la seguridad de los datos locales | Alta | Permisos de archivos y protección de la base de datos y de los respaldos |
+| RNF-15 | No almacenar claves dentro del código ni de repositorios | Alta | Revisión del repositorio sin credenciales |
+| RNF-16 | Asegurar la trazabilidad de los resultados generados por IA | Media | Registro de consulta, fecha, modelo utilizado y fuentes de datos |
+| RNF-17 | Restringir los permisos del modelo de IA y de cualquier agente o herramienta | Alta | Pruebas que confirmen acceso de solo lectura a datos autorizados |
 
-| Campo                         | Descripción                                                                  |
-| ----------------------------- | ---------------------------------------------------------------------------- |
-| Identificador del riesgo      | Código único del riesgo                                                      |
-| Activo afectado               | Información, modelo, herramienta, infraestructura, repositorio u otro activo |
-| Categoría                     | Tipo de riesgo                                                               |
-| Descripción                   | Descripción concreta del riesgo                                              |
-| Fuente o causa                | Condición que origina o favorece el riesgo                                   |
-| Evento de riesgo              | Situación que puede materializarse                                           |
-| Consecuencia                  | Efecto potencial                                                             |
-| Usuarios o terceros afectados | Personas, grupos u organizaciones potencialmente afectados                   |
-| Probabilidad                  | Valoración propuesta de ocurrencia                                           |
-| Impacto                       | Valoración propuesta de consecuencia                                         |
-| Nivel inherente               | Resultado antes de controles                                                 |
-| Controles existentes          | Medidas actualmente disponibles                                              |
-| Medidas de mitigación         | Acciones propuestas para reducir el riesgo                                   |
-| Responsable                   | Persona o rol encargado del tratamiento                                      |
-| Evidencia                     | Documento, prueba, registro o artefacto verificable                          |
-| Riesgo residual               | Riesgo después de aplicar controles                                          |
-| Estado                        | Abierto, en tratamiento, aceptado, cerrado u otro estado validado            |
-| Función NIST AI RMF           | Govern, Map, Measure o Manage                                                |
-| Fecha de revisión             | Fecha de actualización                                                       |
+## 5.3 Requisitos de privacidad, seguridad y gobierno de IA
 
-## 6.2 Criterios preliminares de valoración
-
-Se propone una escala sencilla:
-
-* **Probabilidad:** 1 = baja, 2 = media, 3 = alta.
-* **Impacto:** 1 = bajo, 2 = medio, 3 = alto.
-* **Nivel de riesgo:** Probabilidad × Impacto.
-
-| Resultado | Nivel |
-| --------: | ----- |
-|       1–2 | Bajo  |
-|       3–4 | Medio |
-|       6–9 | Alto  |
-
-Esta escala constituye una **propuesta metodológica inicial** y deberá validarse durante la aplicación del instrumento.
-
-## 6.3 Mapa básico de flujo de información
-
-De manera preliminar, el flujo del proyecto puede representarse así:
-
-**Fuentes de datos → clasificación y autorización → almacenamiento/repositorio → modelo local, RAG o herramienta → procesamiento/generación → evaluación → usuario → registro de evidencias y controles**
-
-Cuando intervengan servicios externos:
-
-**Datos autorizados → evaluación de transferencia → servicio externo → procesamiento → resultado → verificación humana → registro**
-
-La decisión de transferir información deberá documentarse en función de la sensibilidad de los datos, autorización, necesidad técnica y controles disponibles.
-
-## 6.4 Decisiones de arquitectura
-
-El instrumento deberá permitir registrar si cada proyecto utiliza:
-
-* Arquitectura local.
-* Arquitectura híbrida.
-* Arquitectura remota.
-
-La decisión deberá acompañarse de una justificación relacionada con datos, modelos, recursos, conectividad, privacidad, seguridad, licenciamiento y necesidades de procesamiento.
+| Código | Requisito de seguridad, privacidad o gobierno | Evidencia esperada | Estado |
+|---|---|---|---|
+| RPG-01 | Clasificar la información antes de registrarla en el sistema | Esquema de clasificación documentado | Propuesta preliminar |
+| RPG-02 | Registrar la finalidad de los datos personales, si estos llegan a tratarse | Registro de finalidad por tipo de dato | [Pendiente de validación con la administradora] |
+| RPG-03 | Usar datos de ejemplo, anonimizados o autorizados durante la fase académica | Constancia de origen de los datos de prueba | Propuesta preliminar |
+| RPG-04 | Restringir accesos según el rol | Matriz de roles y pruebas de acceso | Propuesta preliminar |
+| RPG-05 | Mantener copias de seguridad locales protegidas | Procedimiento y verificación de acceso a respaldos | Propuesta preliminar |
+| RPG-06 | Evitar enviar datos a servicios externos | Configuración documentada sin conexiones salientes de la aplicación | Propuesta preliminar |
+| RPG-07 | Registrar la versión del modelo local utilizado | Ficha de modelo con nombre y versión | Propuesta preliminar |
+| RPG-08 | Documentar licencia y procedencia del modelo, ERP, bibliotecas y dependencias | Inventario de licencias | Propuesta preliminar |
+| RPG-09 | No permitir que la IA modifique registros sin aprobación humana | Pruebas de confirmación obligatoria | Propuesta preliminar |
+| RPG-10 | Validar resultados o reportes de IA antes de usarlos para decisiones | Etiquetado de borrador y registro de revisión | Propuesta preliminar |
+| RPG-11 | Mantener un mecanismo para corregir información | Procedimiento de corrección con trazabilidad | Propuesta preliminar |
+| RPG-12 | Proteger las credenciales de acceso | Almacenamiento seguro (hash) y política de contraseñas | Propuesta preliminar |
+| RPG-13 | Contar con un procedimiento básico para reportar incidentes o pérdida de información | Documento de procedimiento | Propuesta preliminar |
+| RPG-14 | Definir un responsable de revisar respaldos, permisos y cambios importantes | Designación formal documentada | [Pendiente de validación con la administradora] |
 
 ---
 
-# 7. Fuera de alcance
+# 6. Criterios de éxito
 
-El proyecto no contempla:
+Las metas se formulan como acciones por comprobar. No se presumen resultados.
 
-* Desarrollar un sistema institucional completo de gestión de riesgos.
-* Sustituir la revisión jurídica de la institución.
-* Constituir una certificación de cumplimiento legal.
-* Garantizar que un proyecto sea completamente seguro.
-* Realizar auditorías formales a terceros.
-* Entrenar modelos fundacionales.
-* Construir modelos de IA desde cero.
-* Implementar un SOC, SIEM o plataforma empresarial de ciberseguridad.
-* Procesar datos personales reales sin autorización expresa.
-* Utilizar información empresarial confidencial no anonimizada.
-* Medir impactos sociales a gran escala.
-* Reemplazar la revisión humana.
-* Determinar por sí sola la aprobación institucional definitiva de un proyecto.
-* Desarrollar una aplicación productiva de alta disponibilidad.
-* Cubrir todas las normas internacionales existentes.
-
-El resultado será un **instrumento académico y técnico inicial**, susceptible de validación, ampliación y eventual adopción institucional.
-
----
-
-# 8. Usuarios y partes interesadas
-
-## 8.1 Identificación general
-
-| Parte interesada                                           | Interés                                  | Responsabilidad o necesidad                      | Interacción con el instrumento          | Riesgo si no lo utiliza                           |
-| ---------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------ | --------------------------------------- | ------------------------------------------------- |
-| Estudiantes del diplomado                                  | Desarrollar proyectos de IA responsables | Identificar y gestionar riesgos de sus proyectos | Diligenciamiento y actualización        | Omisión de riesgos o controles                    |
-| Docentes                                                   | Evaluar competencias                     | Revisar evidencias y criterios técnicos          | Revisión y retroalimentación            | Evaluación heterogénea                            |
-| Asesores de proyectos                                      | Orientar decisiones                      | Apoyar arquitectura, riesgos y documentación     | Consulta y validación                   | Decisiones técnicas insuficientemente sustentadas |
-| Coordinación académica                                     | Gestionar el diplomado                   | Definir o validar lineamientos                   | Administración o revisión institucional | Falta de estandarización                          |
-| Responsables de laboratorios                               | Mantener condiciones de práctica         | Apoyar controles técnicos                        | Consulta de requisitos                  | Exposición de información o recursos              |
-| Equipos de desarrollo                                      | Construir soluciones                     | Implementar controles                            | Aplicación durante desarrollo           | Riesgos incorporados al sistema                   |
-| Responsables de datos                                      | Gestionar información                    | Revisar procedencia, acceso y uso                | Validación de datos                     | Uso inadecuado de información                     |
-| Organizaciones aliadas, cuando aplique                     | Obtener soluciones pertinentes           | Definir condiciones de información               | Consulta y validación                   | Transferencias o usos no autorizados              |
-| Usuarios o titulares de datos                              | Protección de su información             | Ejercer derechos cuando corresponda              | Indirecta, mediante controles           | Afectación de privacidad                          |
-| Instancia institucional que eventualmente revise proyectos | Gobierno académico                       | Revisar condiciones de proyectos                 | Consulta de evidencias                  | Decisiones sin trazabilidad                       |
-
-La existencia, denominación y funciones específicas de instancias institucionales deberán confirmarse:
-
-**[Pendiente de validación institucional]**: determinar qué dependencias o comités tendrán formalmente responsabilidades sobre revisión, aprobación, privacidad o gobierno de proyectos de IA.
+| Código | Criterio de éxito | Indicador o evidencia | Meta propuesta | Estado inicial |
+|---|---|---|---|---|
+| CE-01 | Entrevista realizada con la administradora | Acta o guion con hallazgos | Realizar una entrevista semiestructurada y documentar hallazgos | Pendiente |
+| CE-02 | Procesos prioritarios identificados y documentados | Descripción de procesos | Documentar al menos un flujo operativo prioritario | Pendiente |
+| CE-03 | Usuarios y permisos definidos | Matriz de roles y permisos | Definir roles básicos y validarlos con la administradora | Pendiente |
+| CE-04 | Registros manuales prioritarios identificados | Inventario de cuadernos y datos | Identificar los registros de mayor relevancia para la fase inicial | Pendiente |
+| CE-05 | Prototipo o solución local funcional | Demostración | Demostrar el flujo priorizado de extremo a extremo con datos de ejemplo | Pendiente |
+| CE-06 | Registro y consulta de información priorizada | Pruebas de registro y consulta | Verificar el registro y consulta de los datos del flujo priorizado | Pendiente |
+| CE-07 | Copia de seguridad local probada | Evidencia de ejecución | Ejecutar una copia de seguridad local y verificar su disponibilidad | Pendiente |
+| CE-08 | Restauración o verificación de integridad del respaldo | Informe de prueba | Restaurar la copia en un entorno de prueba o verificar su integridad | Pendiente |
+| CE-09 | Asistente de IA local limitado a consultas autorizadas | Pruebas de consulta y de restricción | Comprobar que responde solo con datos autorizados y sin permisos de escritura | Pendiente |
+| CE-10 | Confirmación humana para cambios críticos | Casos de prueba | Verificar que ninguna modificación crítica se ejecuta sin confirmación | Pendiente |
+| CE-11 | Matriz de riesgos elaborada, revisada y con controles documentados | Matriz actualizada | Aplicar la matriz a la propuesta tecnológica y documentar controles de los riesgos prioritarios | Preliminar elaborada |
+| CE-12 | Pruebas con datos autorizados, sintéticos o anonimizados | Registro de pruebas | Ejecutar pruebas únicamente con datos de estas categorías | Pendiente |
+| CE-13 | Manual básico de usuario y documentación técnica | Documentos entregados | Entregar manual básico, README técnico y registro de versiones | Pendiente |
+| CE-14 | Evaluación preliminar de viabilidad de Odoo Community Edition u otra alternativa, y retroalimentación de la administradora o usuario principal | Informe comparativo y comentarios cualitativos | Documentar la evaluación y obtener retroalimentación cualitativa de al menos un usuario clave, si está disponible | Pendiente |
 
 ---
 
-# 9. Requisitos del proyecto
-
-## 9.1 Requisitos funcionales
-
-| Código | Tipo      | Requisito                                                    | Prioridad | Evidencia de cumplimiento  |
-| ------ | --------- | ------------------------------------------------------------ | --------- | -------------------------- |
-| RF-01  | Funcional | Registrar la información general del proyecto                | Alta      | Formato diligenciado       |
-| RF-02  | Funcional | Identificar actores y responsables                           | Alta      | Registro de actores        |
-| RF-03  | Funcional | Registrar activos de información                             | Alta      | Inventario                 |
-| RF-04  | Funcional | Clasificar los datos utilizados                              | Alta      | Clasificación documentada  |
-| RF-05  | Funcional | Registrar modelos, datasets, herramientas y proveedores      | Alta      | Inventario técnico         |
-| RF-06  | Funcional | Identificar riesgos del proyecto                             | Alta      | Matriz                     |
-| RF-07  | Funcional | Registrar probabilidad e impacto                             | Alta      | Matriz diligenciada        |
-| RF-08  | Funcional | Obtener un nivel de riesgo                                   | Alta      | Valoración documentada     |
-| RF-09  | Funcional | Asociar controles y mitigaciones                             | Alta      | Registro de controles      |
-| RF-10  | Funcional | Relacionar riesgos con Govern, Map, Measure y Manage         | Alta      | Campo NIST diligenciado    |
-| RF-11  | Funcional | Registrar evidencias                                         | Alta      | Repositorio o anexos       |
-| RF-12  | Funcional | Completar el checklist de privacidad                         | Alta      | Checklist diligenciado     |
-| RF-13  | Funcional | Registrar decisiones de arquitectura local, híbrida o remota | Alta      | Ficha de arquitectura      |
-| RF-14  | Funcional | Registrar transferencias a servicios externos                | Alta      | Registro de transferencias |
-| RF-15  | Funcional | Aplicar la matriz a un caso académico controlado             | Alta      | Caso de aplicación         |
-| RF-16  | Funcional | Generar una versión reproducible del instrumento             | Media     | Archivo/versionado         |
-| RF-17  | Funcional | Registrar estado y fecha de revisión de los riesgos          | Media     | Historial de revisión      |
-
-## 9.2 Requisitos no funcionales
-
-| Código | Tipo         | Requisito                                                  | Prioridad | Evidencia de cumplimiento |
-| ------ | ------------ | ---------------------------------------------------------- | --------- | ------------------------- |
-| RNF-01 | No funcional | El instrumento debe ser claro para usuarios académicos     | Alta      | Revisión de comprensión   |
-| RNF-02 | No funcional | Debe permitir reproducir el diligenciamiento               | Alta      | Guía y versión controlada |
-| RNF-03 | No funcional | Debe mantener trazabilidad de cambios                      | Alta      | Control de versiones      |
-| RNF-04 | No funcional | Debe preservar la confidencialidad de la información       | Alta      | Reglas de manejo          |
-| RNF-05 | No funcional | Debe mantener integridad de registros                      | Alta      | Versionado y controles    |
-| RNF-06 | No funcional | Debe tener disponibilidad razonable                        | Media     | Acceso al instrumento     |
-| RNF-07 | No funcional | Debe poder utilizarse localmente cuando sea posible        | Media     | Versión local             |
-| RNF-08 | No funcional | Debe requerir bajo costo computacional                     | Media     | Evaluación técnica        |
-| RNF-09 | No funcional | Debe ser mantenible y actualizable                         | Alta      | Estructura editable       |
-| RNF-10 | No funcional | Debe facilitar accesibilidad y comprensión                 | Media     | Revisión                  |
-| RNF-11 | No funcional | Debe ser independiente de una plataforma específica        | Alta      | Diseño neutral            |
-| RNF-12 | No funcional | Debe permitir incorporación de nuevas categorías de riesgo | Media     | Estructura extensible     |
-
-## 9.3 Requisitos de privacidad y seguridad
-
-| Código | Tipo           | Requisito                                     | Prioridad | Evidencia de cumplimiento |
-| ------ | -------------- | --------------------------------------------- | --------- | ------------------------- |
-| RPS-01 | Privacidad     | No almacenar claves API o secretos            | Alta      | Revisión del repositorio  |
-| RPS-02 | Privacidad     | No utilizar datos sensibles sin autorización  | Alta      | Evidencia de autorización |
-| RPS-03 | Privacidad     | Aplicar minimización de datos                 | Alta      | Justificación de datos    |
-| RPS-04 | Privacidad     | Definir responsables del tratamiento          | Alta      | Registro                  |
-| RPS-05 | Privacidad     | Registrar transferencias externas             | Alta      | Registro de servicios     |
-| RPS-06 | Seguridad      | Controlar permisos de herramientas y agentes  | Alta      | Configuración y pruebas   |
-| RPS-07 | Licenciamiento | Documentar procedencia de modelos y datasets  | Alta      | Inventario                |
-| RPS-08 | Seguridad      | Evaluar prompt injection                      | Alta      | Evidencias de pruebas     |
-| RPS-09 | Seguridad      | Evaluar fuga de información                   | Alta      | Evidencias de pruebas     |
-| RPS-10 | Seguridad      | Registrar incidentes o excepciones            | Media     | Bitácora                  |
-| RPS-11 | Gobernanza     | Mantener supervisión humana                   | Alta      | Registro de revisión      |
-| RPS-12 | Seguridad      | Registrar versiones de modelos y dependencias | Alta      | Manifiesto o inventario   |
-
-Estos requisitos se fundamentan en las recomendaciones de seguridad y privacidad del documento base, que incluyen control de agentes, protección de secretos, clasificación de documentos RAG, pruebas de prompt injection y fuga de datos, así como registro de versiones y procedencia de modelos. 
-
----
-
-# 10. Matriz preliminar de riesgos NIST AI RMF
-
-El NIST AI RMF se utiliza en el diplomado como referente operativo para organizar la gestión de riesgos mediante **Govern, Map, Measure y Manage**. Estas funciones se traducen en responsabilidades, contexto, pruebas, métricas, controles y decisiones de aceptación o mitigación. 
-
-La siguiente matriz corresponde a una **valoración preliminar académica propuesta** para el diseño del instrumento. No representa resultados de una evaluación institucional ni riesgos medidos sobre un sistema real. Los responsables concretos y el riesgo residual deberán validarse durante la aplicación.
-
-| ID   | Función NIST  | Categoría            | Riesgo / causa / consecuencia                                                 | Activo afectado       | Usuarios afectados     |  P |  I |   Nivel | Control o mitigación propuesta                                       | Responsable            | Evidencia                 | Riesgo residual | Estado  |
-| ---- | ------------- | -------------------- | ----------------------------------------------------------------------------- | --------------------- | ---------------------- | -: | -: | ------: | -------------------------------------------------------------------- | ---------------------- | ------------------------- | --------------- | ------- |
-| R-01 | Govern        | Privacidad           | Tratamiento de datos personales sin autorización o finalidad documentada      | Datos personales      | Titulares              |  2 |  3 |  6 Alto | Clasificación, autorización, minimización y revisión previa          | [Pendiente de validar] | Checklist y autorización  | Pendiente       | Abierto |
-| R-02 | Govern        | Privacidad/seguridad | Transferencia involuntaria de información a servicios externos                | Datos y documentos    | Titulares/organización |  2 |  3 |  6 Alto | Identificar servicios externos y decidir qué información puede salir | [Pendiente de validar] | Mapa de flujo             | Pendiente       | Abierto |
-| R-03 | Map           | Datos                | Falta de clasificación de información utilizada en RAG o datasets             | Documentos/datasets   | Usuarios/titulares     |  3 |  3 |  9 Alto | Clasificación por sensibilidad y procedencia                         | [Pendiente de validar] | Inventario de datos       | Pendiente       | Abierto |
-| R-04 | Govern        | Licenciamiento       | Uso de modelos, datasets o contenidos con licencia incompatible o desconocida | Modelos/datasets      | Equipo/organización    |  2 |  3 |  6 Alto | Inventario de licencias y procedencia                                | [Pendiente de validar] | Registro de licencias     | Pendiente       | Abierto |
-| R-05 | Map           | Supply chain         | Procedencia desconocida de modelos o dependencias                             | Modelos/dependencias  | Proyecto               |  2 |  3 |  6 Alto | Registrar fuente, versión, licencia e identificador                  | [Pendiente de validar] | Manifiesto                | Pendiente       | Abierto |
-| R-06 | Measure       | Seguridad            | Prompt injection que altera instrucciones o induce acciones no previstas      | RAG/agente            | Proyecto/usuarios      |  2 |  3 |  6 Alto | Pruebas adversariales, validación de entradas y aislamiento          | [Pendiente de validar] | Casos de prueba           | Pendiente       | Abierto |
-| R-07 | Manage        | Seguridad            | Fuga de información durante consultas, respuestas o herramientas              | Datos/contexto        | Titulares/organización |  2 |  3 |  6 Alto | Control de contexto, permisos y pruebas de fuga                      | [Pendiente de validar] | Informe de pruebas        | Pendiente       | Abierto |
-| R-08 | Govern/Manage | Agentes              | Permisos excesivos permiten ejecutar acciones no necesarias                   | Herramientas/sistema  | Proyecto/terceros      |  2 |  3 |  6 Alto | Mínimo privilegio, sandboxing y aprobación humana                    | [Pendiente de validar] | Matriz de permisos        | Pendiente       | Abierto |
-| R-09 | Measure       | Calidad              | Respuestas no verificadas o alucinaciones utilizadas como información factual | Salidas del modelo    | Usuarios               |  3 |  2 |  6 Alto | Grounding, citas, pruebas y verificación humana                      | [Pendiente de validar] | Batería de evaluación     | Pendiente       | Abierto |
-| R-10 | Measure       | Equidad              | Sesgos o resultados discriminatorios no identificados                         | Modelo/salidas        | Personas afectadas     |  2 |  3 |  6 Alto | Pruebas, revisión de casos y documentación de limitaciones           | [Pendiente de validar] | Informe de evaluación     | Pendiente       | Abierto |
-| R-11 | Govern/Map    | Contenido sintético  | Contenido generado presentado sin identificación cuando pueda inducir a error | Imagen/audio/video/3D | Usuarios/terceros      |  2 |  2 | 4 Medio | Identificación de contenido sintético y metadatos                    | [Pendiente de validar] | Registro de procedencia   | Pendiente       | Abierto |
-| R-12 | Govern        | Trazabilidad         | Falta de registro de modelos, datos, parámetros, decisiones y cambios         | Proyecto              | Equipo/docentes        |  3 |  2 |  6 Alto | Versionado, fichas, bitácora y evidencias                            | [Pendiente de validar] | Repositorio/documentación | Pendiente       | Abierto |
-
-### 10.1 Interpretación metodológica
-
-Los valores anteriores constituyen una **propuesta inicial para estructurar el instrumento**, no una medición empírica. La probabilidad y el impacto deberán revisarse cuando se aplique la matriz a un caso concreto.
-
-La función **Govern** se relaciona principalmente con políticas de uso, roles, inventarios, licencias, supervisión y documentación. **Map** permite contextualizar usuarios, datos, impactos, amenazas y dependencias. **Measure** concentra pruebas, evaluación y medición de calidad y seguridad. **Manage** aborda mitigaciones, límites de autonomía, controles, monitoreo y mejora. Esta correspondencia sigue la aplicación establecida en el documento base del diplomado. 
-
----
-
-# 11. Checklist preliminar de privacidad
-
-El checklist se plantea como un instrumento de verificación y no como certificación jurídica. Su aplicación deberá adaptarse al tipo de proyecto, datos utilizados y condiciones institucionales.
-
-## 11.1 Definición del caso de uso
-
-| Código  | Pregunta de verificación                             |  Sí |  No | N/A | Evidencia | Responsable | Observaciones |
-| ------- | ---------------------------------------------------- | :-: | :-: | :-: | --------- | ----------- | ------------- |
-| PRIV-01 | ¿El propósito del proyecto está claramente definido? |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-02 | ¿Se ha identificado quiénes utilizarán la solución?  |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-03 | ¿Se han identificado posibles personas afectadas?    |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-04 | ¿Se ha justificado la necesidad de utilizar IA?      |  ☐  |  ☐  |  ☐  |           |             |               |
-
-## 11.2 Identificación y clasificación de datos
-
-| Código  | Pregunta de verificación                                                             |  Sí |  No | N/A | Evidencia | Responsable | Observaciones |
-| ------- | ------------------------------------------------------------------------------------ | :-: | :-: | :-: | --------- | ----------- | ------------- |
-| PRIV-05 | ¿Se han identificado todas las fuentes de datos?                                     |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-06 | ¿Los datos han sido clasificados según su sensibilidad?                              |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-07 | ¿Se ha determinado si existen datos personales?                                      |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-08 | ¿Se ha justificado la necesidad de cada categoría de dato?                           |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-09 | ¿Se utilizan preferentemente datos públicos, sintéticos, anonimizados o autorizados? |  ☐  |  ☐  |  ☐  |           |             |               |
-
-## 11.3 Recolección y autorización
-
-| Código  | Pregunta de verificación                              |  Sí |  No | N/A | Evidencia | Responsable | Observaciones |
-| ------- | ----------------------------------------------------- | :-: | :-: | :-: | --------- | ----------- | ------------- |
-| PRIV-10 | ¿Se ha definido la finalidad del tratamiento?         |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-11 | ¿Se ha verificado la autorización cuando corresponda? |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-12 | ¿Se ha documentado la procedencia de los datos?       |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-13 | ¿Se ha evitado recolectar información innecesaria?    |  ☐  |  ☐  |  ☐  |           |             |               |
-
-## 11.4 Preparación y almacenamiento
-
-| Código  | Pregunta de verificación                                     |  Sí |  No | N/A | Evidencia | Responsable | Observaciones |
-| ------- | ------------------------------------------------------------ | :-: | :-: | :-: | --------- | ----------- | ------------- |
-| PRIV-14 | ¿Los datos se almacenan en un entorno controlado?            |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-15 | ¿Se han definido permisos de acceso?                         |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-16 | ¿Se ha definido una política de conservación y eliminación?  |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-17 | ¿Se han realizado copias o respaldos cuando sean necesarios? |  ☐  |  ☐  |  ☐  |           |             |               |
-
-## 11.5 Modelos, herramientas y licencias
-
-| Código  | Pregunta de verificación                            |  Sí |  No | N/A | Evidencia | Responsable | Observaciones |
-| ------- | --------------------------------------------------- | :-: | :-: | :-: | --------- | ----------- | ------------- |
-| PRIV-18 | ¿Se conoce la procedencia del modelo utilizado?     |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-19 | ¿Se conoce su licencia y condición de uso?          |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-20 | ¿Se conoce la procedencia de datasets y contenidos? |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-21 | ¿Se han documentado las dependencias relevantes?    |  ☐  |  ☐  |  ☐  |           |             |               |
-
-## 11.6 Procesamiento local, híbrido o remoto
-
-| Código  | Pregunta de verificación                                         |  Sí |  No | N/A | Evidencia | Responsable | Observaciones |
-| ------- | ---------------------------------------------------------------- | :-: | :-: | :-: | --------- | ----------- | ------------- |
-| PRIV-22 | ¿Se ha definido dónde se procesan los datos?                     |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-23 | ¿Se ha justificado el procesamiento local, híbrido o remoto?     |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-24 | ¿Se han identificado transferencias hacia servicios externos?    |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-25 | ¿Se ha evitado transferir información sensible sin autorización? |  ☐  |  ☐  |  ☐  |           |             |               |
-
-## 11.7 RAG, agentes y herramientas
-
-| Código  | Pregunta de verificación                                               |  Sí |  No | N/A | Evidencia | Responsable | Observaciones |
-| ------- | ---------------------------------------------------------------------- | :-: | :-: | :-: | --------- | ----------- | ------------- |
-| PRIV-26 | ¿Los documentos utilizados en RAG han sido clasificados y autorizados? |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-27 | ¿Los agentes tienen únicamente los permisos necesarios?                |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-28 | ¿Las herramientas disponibles están delimitadas?                       |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-29 | ¿Se han probado escenarios de prompt injection?                        |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-30 | ¿Se han evaluado posibles fugas de información?                        |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-31 | ¿Las acciones sensibles requieren supervisión humana?                  |  ☐  |  ☐  |  ☐  |           |             |               |
-
-## 11.8 Contenido sintético e identidad
-
-| Código  | Pregunta de verificación                                                 |  Sí |  No | N/A | Evidencia | Responsable | Observaciones |
-| ------- | ------------------------------------------------------------------------ | :-: | :-: | :-: | --------- | ----------- | ------------- |
-| PRIV-32 | ¿Se identifica el contenido sintético cuando puede inducir a error?      |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-33 | ¿Existe consentimiento para utilizar imágenes, voz o rostro de personas? |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-34 | ¿Se ha documentado la procedencia de los insumos multimodales?           |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-35 | ¿Se han revisado las condiciones de uso de los contenidos?               |  ☐  |  ☐  |  ☐  |           |             |               |
-
-## 11.9 Evaluación y operación
-
-| Código  | Pregunta de verificación                                                             |  Sí |  No | N/A | Evidencia | Responsable | Observaciones |
-| ------- | ------------------------------------------------------------------------------------ | :-: | :-: | :-: | --------- | ----------- | ------------- |
-| PRIV-36 | ¿Las salidas generadas son verificadas antes de utilizarse como información factual? |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-37 | ¿Se han documentado limitaciones conocidas?                                          |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-38 | ¿Existe registro de incidentes o excepciones?                                        |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-39 | ¿Se conserva trazabilidad de cambios y versiones?                                    |  ☐  |  ☐  |  ☐  |           |             |               |
-| PRIV-40 | ¿Existe supervisión humana durante el uso del sistema?                               |  ☐  |  ☐  |  ☐  |           |             |               |
-
-La estructura anterior toma como referencia las recomendaciones del documento base sobre protección de datos, documentos RAG, agentes, contenido sintético, licenciamiento, procedencia y supervisión humana. 
-
----
-
-# 12. Criterios de éxito
-
-Los siguientes criterios se plantean como metas de evaluación del proyecto, no como resultados ya obtenidos:
-
-| Criterio                                                                         | Evidencia esperada         |
-| -------------------------------------------------------------------------------- | -------------------------- |
-| La matriz contiene todos los campos definidos                                    | Versión final de la matriz |
-| Los riesgos se relacionan con Govern, Map, Measure y Manage                      | Matriz diligenciada        |
-| El checklist cubre privacidad, seguridad, licencias y trazabilidad               | Checklist final            |
-| El instrumento puede aplicarse a un caso académico controlado                    | Caso de aplicación         |
-| Los usuarios pueden comprender cómo diligenciarlo                                | Guía y revisión            |
-| Se identifican datos, activos, responsables y controles                          | Caso diligenciado          |
-| Se documentan supuestos y limitaciones                                           | Documento de aplicación    |
-| El instrumento utiliza datos públicos, sintéticos, anonimizados o autorizados    | Evidencia de datos         |
-| Existe una versión reproducible y documentada                                    | Archivo versionado         |
-| Se registran observaciones de revisión académica o piloto, si se realiza         | Informe de revisión        |
-| El diseño no depende de una plataforma específica                                | Formato independiente      |
-| El diseño puede operar preferiblemente de forma local o con mínima transferencia | Ficha de arquitectura      |
-
-Las métricas concretas de aceptación, si fueran necesarias, deberán definirse y validarse durante la fase de evaluación.
-
-**[Pendiente de validación institucional]**: establecer quién realizará formalmente la revisión del instrumento y cuáles serán los criterios institucionales de aceptación.
-
----
-
-# 13. Limitaciones
-
-El desarrollo del proyecto presenta las siguientes limitaciones:
-
-1. **Tiempo limitado del diplomado.** El instrumento debe mantenerse dentro de un alcance académico viable y no convertirse en una plataforma institucional completa.
-
-2. **Disponibilidad de participantes.** La validación puede depender del número de estudiantes, docentes o asesores disponibles.
-
-3. **Ausencia de datos reales autorizados.** La aplicación inicial deberá priorizar datos públicos, sintéticos, anonimizados o autorizados.
-
-4. **Evolución tecnológica.** Los modelos, herramientas, dependencias y mecanismos de IA cambian con rapidez, por lo que el instrumento debe mantenerse independiente de tecnologías específicas.
-
-5. **Diferencias de hardware.** Las capacidades locales pueden variar entre equipos, aspecto que el propio diplomado contempla mediante diferentes rutas de hardware. 
-
-6. **Dependencia parcial de software de terceros.** Aunque el enfoque sea local, los proyectos pueden utilizar modelos, paquetes y herramientas externas cuya procedencia y licencia deberán documentarse.
-
-7. **Ausencia de revisión jurídica formal.** El instrumento no sustituirá la revisión de especialistas jurídicos ni determinará por sí mismo el cumplimiento legal.
-
-8. **Cobertura limitada de escenarios.** No será posible probar todas las posibles amenazas, vulnerabilidades o situaciones de uso.
-
-9. **Subjetividad en la valoración de riesgos.** La probabilidad e impacto pueden variar según el contexto y deberán revisarse con criterios consistentes.
-
-10. **Impactos de largo plazo.** El proyecto no contempla una evaluación de impactos sociales a gran escala.
-
-11. **Adaptación institucional posterior.** Los campos, responsables y procedimientos deberán ajustarse si la institución cuenta con políticas o instrumentos propios.
-
----
-
-# 14. Consideraciones éticas, legales y de privacidad
-
-El proyecto deberá adoptar una postura de ingeniería responsable y considerar los siguientes principios.
-
-## 14.1 Protección de datos personales
-
-Los proyectos deberán priorizar datos públicos, sintéticos, anonimizados o expresamente autorizados. Cuando se traten datos personales deberán considerarse finalidad, autorización cuando corresponda, seguridad, confidencialidad, circulación restringida y derechos de los titulares. 
-
-La **Ley 1581 de 2012** se utilizará como referente colombiano para la protección de datos personales, sin que el presente instrumento constituya una certificación de cumplimiento jurídico.
-
-## 14.2 Procesamiento local
-
-La ejecución local puede constituir una medida técnica para reducir transferencias innecesarias, pero no elimina las obligaciones jurídicas o éticas sobre los datos. 
-
-Por tanto, “procesamiento local” no deberá interpretarse como sinónimo automático de “procesamiento seguro”.
-
-## 14.3 Propiedad intelectual y licenciamiento
-
-Los modelos, datasets, imágenes, audios y otros insumos deberán contar con procedencia y condiciones de uso conocidas. El documento base establece además la necesidad de diferenciar el uso académico de la explotación comercial y conservar créditos, atribuciones y metadatos cuando corresponda. 
-
-## 14.4 Identidad y contenido sintético
-
-El uso de imágenes, voces o rostros de personas deberá contar con consentimiento y propósito legítimo. Asimismo, los productos sintéticos deberán identificarse cuando su naturaleza pueda inducir a error. 
-
-## 14.5 Supervisión humana
-
-La automatización no deberá eliminar la responsabilidad humana. El diplomado establece que las acciones sensibles realizadas por agentes requieren controles y aprobación humana cuando corresponda. 
-
-## 14.6 Verificación de resultados
-
-Las salidas generadas por IA no deberán presentarse como hechos verificados sin comprobación independiente. Esta condición es particularmente importante en sistemas RAG, generación de contenido y aplicaciones que produzcan información destinada a terceros. 
-
----
-
-# 15. Metodología preliminar
-
-Se propone una metodología aplicada, progresiva y orientada a producto, coherente con el enfoque del diplomado, que conecta cada concepto con una decisión, práctica o evidencia verificable. 
-
-| Fase                     | Actividades principales                                                      | Entregable                     |
-| ------------------------ | ---------------------------------------------------------------------------- | ------------------------------ |
-| 1. Revisión del contexto | Analizar el documento base, Módulo 1 y apartado 8.4                          | Documento de contextualización |
-| 2. Diagnóstico           | Identificar actores, activos, datos, procesos y riesgos                      | Mapa de actores e inventario   |
-| 3. Revisión conceptual   | Analizar NIST AI RMF, privacidad y referentes indicados en el documento base | Marco conceptual de trabajo    |
-| 4. Diseño de matriz      | Definir campos, categorías, valoración y relación NIST                       | Matriz preliminar              |
-| 5. Diseño del checklist  | Definir preguntas de privacidad, seguridad, licenciamiento y trazabilidad    | Checklist preliminar           |
-| 6. Aplicación            | Utilizar el instrumento en un caso académico controlado                      | Caso diligenciado              |
-| 7. Revisión              | Analizar dificultades, observaciones y posibles ajustes                      | Informe de revisión            |
-| 8. Documentación         | Consolidar versión final, limitaciones y recomendaciones                     | Instrumento reproducible       |
-
-La metodología seguirá el principio de que la práctica debe generar evidencia verificable y no limitarse a demostraciones o capturas de pantalla. 
-
----
-
-# 16. Entregables
-
-Los entregables propuestos son:
-
-1. Documento de planteamiento del problema.
-2. Objetivo general y objetivos específicos.
-3. Mapa de actores.
-4. Inventario de activos y datos.
-5. Mapa básico de flujo de datos.
-6. Matriz de riesgos de IA.
-7. Checklist de privacidad.
-8. Guía breve de diligenciamiento.
-9. Caso de aplicación.
-10. Informe de revisión o validación.
-11. Registro de limitaciones.
-12. Versión reproducible del instrumento.
-13. Presentación o sustentación técnica.
-
-Estos entregables son coherentes con la orientación del diplomado hacia productos documentados, reproducibles y sustentables técnicamente. El proyecto integrador debe contener problema, usuarios, alcance, requisitos, arquitectura, datos, evaluación, seguridad, privacidad, licencias y documentación. 
-
----
-
-# 17. Conclusión del planteamiento
-
-La incorporación de inteligencia artificial generativa en proyectos académicos requiere una perspectiva que supere el uso instrumental de modelos y considere los datos, modelos, herramientas, arquitectura, riesgos, controles, licencias, privacidad y responsabilidad humana como componentes integrales de la solución.
-
-El diplomado IA 5.0 Lab establece esta orientación mediante su enfoque de ingeniería aplicada, local-first, sistemas RAG, agentes, aplicaciones multimodales y gobernanza tecnológica. Dentro de este marco, el apartado **8.4 Gobierno académico** identifica expresamente la necesidad de un formato de matriz de riesgos de IA y checklist de privacidad. 
-
-El proyecto propuesto busca concretar esta necesidad mediante un instrumento académico estructurado que permita identificar y documentar riesgos, relacionarlos con las funciones Govern, Map, Measure y Manage del NIST AI RMF y verificar condiciones básicas de privacidad, seguridad, licenciamiento y trazabilidad.
-
-Su alcance se limita deliberadamente a la formulación, especificación y aplicación controlada del instrumento. De esta manera, no se pretende sustituir las responsabilidades institucionales, jurídicas o humanas, sino proporcionar una herramienta que facilite la toma de decisiones informadas, la documentación técnica y la evaluación de proyectos académicos de inteligencia artificial.
-
-La validación posterior permitirá determinar si la estructura propuesta responde adecuadamente a las necesidades del contexto institucional y qué ajustes serían necesarios para una eventual adopción más amplia.
-
----
-
-# Verificación de coherencia del documento
-
-| Comprobación                                                                   | Estado     | Observación                                                                                                            |
-| ------------------------------------------------------------------------------ | ---------- | ---------------------------------------------------------------------------------------------------------------------- |
-| El problema corresponde al tema de matriz de riesgos y checklist de privacidad | **Cumple** | El problema se centra en la necesidad de estructurar ambos instrumentos.                                               |
-| El objetivo general responde al problema                                       | **Cumple** | El objetivo propone diseñar la matriz y el checklist para fortalecer la gestión de riesgos.                            |
-| Existen solo tres o cuatro objetivos específicos                               | **Cumple** | Se formularon cuatro objetivos específicos.                                                                            |
-| Cada objetivo específico contribuye al objetivo general                        | **Cumple** | Los objetivos cubren diagnóstico, diseño y validación.                                                                 |
-| El alcance es académico y viable                                               | **Cumple** | Se excluye explícitamente una plataforma institucional productiva.                                                     |
-| Se identifican usuarios y partes interesadas                                   | **Cumple** | Se incluyen estudiantes, docentes, asesores, coordinación y demás actores relevantes.                                  |
-| Se incluyen requisitos funcionales y no funcionales                            | **Cumple** | Se presentan requisitos funcionales, no funcionales y de privacidad/seguridad.                                         |
-| Se incluye una matriz preliminar NIST AI RMF                                   | **Cumple** | Se presentan 12 riesgos asociados a Govern, Map, Measure y Manage.                                                     |
-| Se incluye un checklist de privacidad                                          | **Cumple** | Se incluyen 40 verificaciones organizadas por etapas.                                                                  |
-| Se incluyen criterios de éxito                                                 | **Cumple** | Se definieron criterios como metas a verificar, sin inventar resultados.                                               |
-| Se incluyen limitaciones y fuera de alcance                                    | **Cumple** | Ambos apartados delimitan expresamente el proyecto.                                                                    |
-| No se inventan resultados                                                      | **Cumple** | Las valoraciones de riesgo se presentan como propuestas preliminares y los resultados de validación quedan pendientes. |
-| Se distingue entre información confirmada y pendiente de validar               | **Cumple** | Se utiliza “[Pendiente de validación institucional]” cuando corresponde.                                               |
-| El documento es coherente con el Módulo 1                                      | **Cumple** | Se incorporan caracterización, actores, datos, flujos, arquitectura y matriz de riesgos.                               |
-| El documento se relaciona con el apartado 8.4 “Gobierno académico”             | **Cumple** | El formato de matriz de riesgos y checklist de privacidad constituye el eje central del proyecto.                      |
-| Se mantiene el proyecto como instrumento y no como plataforma institucional    | **Cumple** | La plataforma productiva queda explícitamente fuera del alcance.                                                       |
-| Se evita presentar el instrumento como certificación legal                     | **Cumple** | Se establece expresamente que no sustituye la revisión jurídica.                                                       |
-| Se evita incluir entrenamiento de modelos fundacionales                        | **Cumple** | No se contempla dentro del alcance ni de los entregables.                                                              |
-| Se contempla procesamiento local, híbrido y remoto                             | **Cumple** | Se incorpora en el mapa de flujo, requisitos y criterios de arquitectura.                                              |
-| Se considera supervisión humana                                                | **Cumple** | Se incorpora en riesgos, requisitos, checklist y consideraciones éticas.                                               |
-| Se considera trazabilidad de modelos, datos y decisiones                       | **Cumple** | Se incluye en requisitos, matriz, checklist y criterios de éxito.                                                      |
-
-**Aspectos que permanecen pendientes de validación institucional:** existencia de instrumentos previos equivalentes, responsables institucionales específicos, procedimiento formal de revisión o aprobación de proyectos de IA y criterios institucionales definitivos para la validación del instrumento.
+# 7. Tecnología e infraestructura requerida
+
+La infraestructura se plantea como **local-first**, general y escalable. No se afirma que exista actualmente. Las especificaciones son propuestas iniciales; la definición final dependerá de:
+
+- La cantidad de usuarios simultáneos.
+- El volumen de registros.
+- El uso real de IA local.
+- La implementación o no de un ERP como Odoo Community Edition.
+- El sistema operativo disponible.
+- La disponibilidad de respaldo local.
+- La entrevista con la administradora.
+- Las pruebas de rendimiento.
+
+| Componente | Mínimo viable | Recomendado | Justificación | Pendiente de validar |
+|---|---|---|---|---|
+| Procesador | CPU moderna de 4 núcleos o superior | CPU moderna de 6 a 8 núcleos | La inferencia en CPU y los servicios locales requieren capacidad de cómputo | Equipo existente |
+| Memoria RAM | 16 GB | 32 GB | Convivencia de base de datos, aplicación, posible ERP ligero y modelo pequeño o mediano cuantizado | Uso real de IA y ERP |
+| Almacenamiento principal | Al menos 256 GB disponibles | 512 GB o superior | Sistema, datos, modelos y registros | Volumen de datos y tamaño de modelos |
+| Tipo de almacenamiento | SSD | SSD NVMe | Velocidad y fiabilidad frente a discos mecánicos | Disponibilidad |
+| Sistema operativo | Linux o Windows, según compatibilidad y soporte | Igual, priorizando el de mejor soporte local | Facilidad de mantenimiento y compatibilidad de herramientas | SO disponible y habilidades del equipo |
+| Red local | Red estable si hay varios equipos | Red Gigabit si hay más de un equipo conectado | Acceso a la aplicación local desde otros equipos | Cantidad de equipos |
+| Equipo cliente | Navegador moderno en equipo existente | Equipo dedicado a caja o atención, si se requiere | Interfaz web local | Equipos y número de usuarios |
+| Servidor local o equipo principal | Un único equipo que aloja aplicación y datos | Equipo principal dedicado | Centralizar datos bajo control del negocio | Ubicación y seguridad física |
+| Sistema de respaldo | Unidad externa o NAS básico | Disco externo adicional o NAS, con copia protegida | Evitar pérdida por falla de disco | Responsable y frecuencia |
+| Fuente de energía o UPS | Protección básica si es posible | UPS para el equipo principal | Evitar corrupción por cortes de energía | Estabilidad eléctrica |
+| Seguridad física | Ubicación con acceso controlado | Equipo en espacio restringido | Reducir acceso físico no autorizado | Distribución del local |
+| Monitor, teclado, mouse e impresora | Periféricos básicos; impresora solo si se requiere | Periféricos adecuados al puesto de trabajo | Operación cotidiana | Necesidad de impresión |
+| GPU | No obligatoria | Opcional; 6 a 8 GB de VRAM pueden acelerar la inferencia | La solución debe funcionar con CPU y modelos pequeños cuantizados | Rendimiento medido en CPU |
+| Modelo de IA local | Modelo pequeño cuantizado para consultas y resúmenes simples | Modelo pequeño o mediano cuantizado, tras pruebas | Equilibrio entre calidad, memoria y velocidad | Idioma español, licencia, memoria y calidad |
+| Motor de inferencia local | Ollama, GPT4All, LM Studio, llama.cpp o equivalente | Igual, según pruebas | Ejecución local sin servicios externos | Facilidad de instalación y mantenimiento |
+| Base de datos local | SQLite para prototipo monousuario | PostgreSQL o MariaDB para varios usuarios | Simplicidad frente a concurrencia y robustez | Número de usuarios simultáneos |
+| Interfaz de usuario | Aplicación web local sencilla | Interfaz web con flujos guiados | Facilidad de uso para personal no técnico | Preferencias de los usuarios |
+| Herramientas de desarrollo y mantenimiento | Python y entorno de desarrollo básico | Entornos virtuales, pruebas y registro de dependencias | Reproducibilidad y mantenimiento | Conocimientos del equipo |
+| ERP gratuito o de código abierto | No incluido por defecto | Odoo Community Edition u otro, solo si se valida | Evaluar frente a la solución propia sin asumir selección | Necesidades, complejidad, licencia, compatibilidad y mantenimiento |
+| Control de versiones | Git local | Git local o repositorio privado | Trazabilidad del código y la documentación | Política de acceso |
+| Seguridad y autenticación | Cuentas individuales y contraseñas protegidas | Autenticación local, roles y registro de auditoría | Control de acceso y trazabilidad | Número de usuarios y roles |
+
+## Tecnologías candidatas
+
+No se impone una única decisión; la selección final dependerá de pruebas y del levantamiento de información.
+
+- **Backend:** Python con FastAPI, Flask o alternativa equivalente.
+- **Base de datos:** SQLite para un prototipo monousuario; PostgreSQL o MariaDB para varios usuarios.
+- **Interfaz:** aplicación web local sencilla, por ejemplo con Streamlit, Gradio, Flask, FastAPI con frontend web u otra alternativa equivalente.
+- **IA local:** Ollama, GPT4All, LM Studio, llama.cpp o alternativa equivalente.
+- **Modelo local:** modelo pequeño o mediano cuantizado, seleccionado tras pruebas de memoria, velocidad, calidad en español y licencia.
+- **ERP:** Odoo Community Edition u otro ERP gratuito o de código abierto, únicamente después de validar necesidades, complejidad, costos de mantenimiento, condiciones de licencia y compatibilidad. Una implementación completa de ERP puede exceder el alcance académico inicial, por lo que debe distinguirse de la automatización operativa básica.
+- **Copias de seguridad:** respaldo cifrado o protegido en disco externo, NAS local o sistema equivalente.
+- **Control de versiones:** Git local o repositorio privado.
+- **Documentación:** manual de usuario, README técnico, registro de versiones y bitácora de cambios.
+
+**Aclaración:** no se recomienda iniciar con modelos grandes, modelos multimodales pesados, entrenamiento de IA, video, imágenes generativas, 3D, integración con nube ni automatizaciones autónomas de alto impacto. La conexión a Internet solo se contempla de forma excepcional para la instalación inicial o la descarga de actualizaciones, paquetes o modelos, y no como requisito del funcionamiento cotidiano.
